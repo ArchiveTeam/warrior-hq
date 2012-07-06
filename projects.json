@@ -1,0 +1,17 @@
+{
+  "warrior": {
+    "seesaw_version": "0.0.1"
+  },
+  "auto_project": "example",
+  "projects": [
+    {
+      "name":        "example",
+      "title":       "Example",
+      "description": "Example project",
+      "deadline":    "2013-01-31T23:59:59Z",
+      "repository":  "https://github.com/ArchiveTeam/example-seesaw-project.git",
+      "logo":        "http://archive.org/images/glogo.png"
+    }
+  ]
+}
+
