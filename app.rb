@@ -16,9 +16,10 @@ module WarriorHQ
     post "/api/update.json" do
       content_type :json
       data = JSON.parse(request.body.read)
-      if data["warrior"]["warrior_id"].to_s=~/\A[0-9]\Z/
-        key = data["warrior"]["warrior_id"]
+      if data["warrior"]["warrior_id"].to_s=~/\A[0-9]+\Z/
+        key = "warriorhq:instances:#{ data["warrior"]["warrior_id"] }"
         $redis.pipelined do
+          $redis.hset(key, "ip", request.ip)
           $redis.hset(key, "last_seen", Time.now.to_i)
           $redis.hset(key, "data", JSON.dump(data["warrior"]))
           $redis.expire(key, 15 * 60)
