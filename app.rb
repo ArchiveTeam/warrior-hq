@@ -12,7 +12,7 @@ module WarriorHQ
       coords = keys.map do |k|
         data = JSON.parse($redis.hget(key, "data")) rescue {}
         if data["lat_lng"] and data["lat_lng"]=~/[-.\/0-9]+/
-          data["lat_lng"].split(",").map{|e|e.to_i}
+          data["lat_lng"].split("/").map{|e|e.to_i}
         else
           nil
         end
