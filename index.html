@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ArchiveTeam Warrior HQ</title>
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+    <![endif]-->
+
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.1.2"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
+
+    <style type="text/css">
+      #map { position: fixed; left: 0; top: 0; width: 100%; height: 100%; }
+      .my-div-icon {
+        animation-duration: 0.8s;
+        animation-name: pulse;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        -webkit-animation-duration: 0.8s;
+        -webkit-animation-name: pulse;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-direction: alternate;
+        -moz-animation-duration: 0.8s;
+        -moz-animation-name: pulse;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-direction: alternate;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border: 3px solid #a00;
+      }
+      @keyframes pulse {
+        from { background: #f88; }
+        to { background: #a00; }
+      }
+      @-webkit-keyframes pulse {
+        from { background: #f88; }
+        to { background: #a00; }
+      }
+      @-moz-keyframes pulse {
+        from { background: #f88; }
+        to { background: #a00; }
+      }
+
+      h1 {
+        position: absolute;
+        left: 50px;
+        top: 10px;
+        margin: 0;
+        padding: 5px 10px 5px 10px;
+        background: #fff;
+        background: rgba(255, 255, 255, 0.7);
+        font-family: Arial,Helvetica,sans-serif;
+        font-size: 18px;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <h1>ArchiveTeam Warrior HQ</h1>
+
+    <script type="text/javascript">
+      (function() {
+
+        var layer = new L.StamenTileLayer('watercolor');
+        var map = L.map('map').setView([30, 0], 3);
+        map.addLayer(layer);
+        map.fitWorld();
+        map.panTo([30, 0]);
+
+        var myIcon = L.divIcon({className: 'my-div-icon', iconSize:[8,8]});
+
+        function updateMarkers(map, markers, d) {
+          for (var i=0; i<markers.length; i++) {
+            map.removeLayer(markers[i]);
+          }
+          markers = [];
+          for (var i=0; i<d.length; i++) {
+            var marker = L.marker(d[i], {icon: myIcon, opacity: 0.8});
+            map.addLayer(marker);
+            markers.push(marker);
+          }
+          return markers;
+        }
+
+        map.theMarkers = [];
+
+        function handleMarkers(responseJSON) {
+          map.theMarkers = updateMarkers(map, map.theMarkers, responseJSON);
+        }
+
+        function loadMarkers() {
+          new Request.JSON({
+            url: "/positions.json",
+            onSuccess: handleMarkers
+          }).send();
+        }
+
+        loadMarkers();
+        window.setInterval(loadMarkers, 60000);
+
+      })();
+    </script>
+  </body>
+</html>
+
