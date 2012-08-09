@@ -99,12 +99,35 @@
 
         function loadMarkers() {
           new Request.JSON({
-            url: "/positions.json",
-            onSuccess: handleMarkers
+            url: '/positions.json',
+            onSuccess: handleMarkers,
+            method: 'GET'
+          }).send();
+        }
+
+        function handleProjects(responseJSON) {
+          if (responseJSON.projects) {
+            for (var i=0; i<responseJSON.projects.length; i++) {
+              var project = responseJSON.projects[i];
+              if (project.lat_lng) {
+                var marker = L.marker(project.lat_lng).addTo(map);
+                marker.bindPopup(project.marker_html);
+                marker.openPopup();
+              }
+            }
+          }
+        }
+
+        function loadProjects() {
+          new Request.JSON({
+            url: '/projects.json',
+            onSuccess: handleProjects,
+            method: 'GET'
           }).send();
         }
 
         loadMarkers();
+        loadProjects();
         window.setInterval(loadMarkers, 60000);
 
       })();

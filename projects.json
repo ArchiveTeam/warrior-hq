@@ -1,16 +1,17 @@
 {
   "warrior": {
-    "seesaw_version": "0.0.1"
+    "seesaw_version": "0.0.2"
   },
-  "auto_project": "example",
+  "auto_project": "tumblr",
   "projects": [
     {
-      "name":        "example",
-      "title":       "Example",
-      "description": "Example project",
-      "deadline":    "2013-01-31T23:59:59Z",
-      "repository":  "https://github.com/ArchiveTeam/example-seesaw-project.git",
-      "logo":        "http://archive.org/images/glogo.png"
+      "name":        "tumblr",
+      "title":       "Tumblr",
+      "description": "Archive Tumblr blogs, a test case for the ArchiveTeam Warrior.",
+      "repository":  "https://github.com/ArchiveTeam/tumblr-grab.git",
+      "logo":        "http://archiveteam.org/images/c/cd/TumblrLogo.png",
+      "lat_lng":     [32.9299,-96.8353],
+      "marker_html": "<img src='http://archiveteam.org/images/thumb/c/cd/TumblrLogo.png/120px-TumblrLogo.png' alt='Tumblr' width='120' height='35' />"
     }
   ]
 }

@@ -10,7 +10,7 @@ module WarriorHQ
 
       keys = $redis.keys("warriorhq:instances:*")
       coords = keys.map do |k|
-        data = JSON.parse($redis.hget(key, "data")) rescue {}
+        data = JSON.parse($redis.hget(k, "data")) rescue {}
         if data["lat_lng"] and data["lat_lng"]=~/[-.\/0-9]+/
           data["lat_lng"].split("/").map{|e|e.to_i}
         else
@@ -18,6 +18,12 @@ module WarriorHQ
         end
       end.compact
       JSON.dump(coords)
+    end
+
+    get "/projects.json" do
+      cache_control :no_cache, :no_store
+      content_type :json
+      $redis.get("warriorhq:projects_json")
     end
 
     post "/api/register.json" do
