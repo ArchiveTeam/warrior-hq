@@ -28,22 +28,38 @@
         -moz-animation-name: pulse;
         -moz-animation-iteration-count: infinite;
         -moz-animation-direction: alternate;
-        border-radius: 10px;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border: 3px solid #a00;
+        border-radius: 6px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        background: #a00;
       }
       @keyframes pulse {
-        from { background: #f88; }
-        to { background: #a00; }
+        from {
+          box-shadow: 0 0 1px 1px rgba(170,0,0,1);
+        }
+        to {
+          box-shadow: 0 0 1px 1px rgba(170,0,0,0.01);
+        }
       }
       @-webkit-keyframes pulse {
-        from { background: #f88; }
-        to { background: #a00; }
+        from {
+          -webkit-box-shadow: 0 0 1px 1px rgba(170,0,0,1);
+          box-shadow: 0 0 1px 1px rgba(170,0,0,1);
+        }
+        to {
+          -webkit-box-shadow: 0 0 1px 1px rgba(170,0,0,0.01);
+          box-shadow: 0 0 1px 1px rgba(170,0,0,0.01);
+        }
       }
       @-moz-keyframes pulse {
-        from { background: #f88; }
-        to { background: #a00; }
+        from {
+          -moz-box-shadow: 0 0 1px 1px rgba(170,0,0,1);
+          box-shadow: 0 0 1px 1px rgba(170,0,0,1);
+        }
+        to {
+          -moz-box-shadow: 0 0 1px 1px rgba(170,0,0,0.01);
+          box-shadow: 0 0 1px 1px rgba(170,0,0,0.01);
+        }
       }
 
       h1 {
@@ -76,7 +92,7 @@
         map.fitWorld();
         map.panTo([30, 0]);
 
-        var myIcon = L.divIcon({className: 'my-div-icon', iconSize:[8,8]});
+        var myIcon = L.divIcon({className: 'my-div-icon', iconSize:[12,12]});
 
         function updateMarkers(map, markers, d) {
           for (var i=0; i<markers.length; i++) {
