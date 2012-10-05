@@ -11,11 +11,14 @@ module WarriorHQ
       keys = $redis.keys("warriorhq:instances:*")
       coords = keys.map do |k|
         data = JSON.parse($redis.hget(k, "data")) rescue {}
-        if data["lat_lng"] and data["lat_lng"]=~/[-.\/0-9]+/
-          data["lat_lng"].split("/").map{|e|e.to_i}
-        else
-          nil
+        pos = nil
+        if data["ip"]
+          geo = $geoip[data["ip"]]
+          if geo and geo["latitude"] and geo["latitude"]=~/[-.0-9]+/
+            pos = [ geo["latitude"].to_i, geo["longitude"].to_i ]
+          end
         end
+        pos
       end.compact
       JSON.dump(coords)
     end
