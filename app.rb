@@ -10,7 +10,7 @@ module WarriorHQ
 
       keys = $redis.keys("warriorhq:instances:*")
       coords = keys.map do |k|
-        ip = JSON.parse($redis.hget(k, "ip")) rescue nil
+        ip = $redis.hget(k, "ip")
         pos = nil
         if ip
           geo = $geoip[ip]
