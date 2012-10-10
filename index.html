@@ -123,7 +123,7 @@
 
         function handleProjects(responseJSON) {
           if (responseJSON.projects) {
-            for (var i=0; i<responseJSON.projects.length; i++) {
+            for (var i=responseJSON.projects.length-1; i>=0; i--) {
               var project = responseJSON.projects[i];
               if (project.lat_lng) {
                 var marker = L.marker(project.lat_lng).addTo(map);
