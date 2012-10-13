@@ -36,6 +36,7 @@ module WarriorHQ
       $redis.pipelined do
         key = "warriorhq:instances:#{ id }"
         $redis.hset(key, "ip", request.ip)
+        $redis.hset(key, "user_agent", request.user_agent)
         $redis.hset(key, "last_seen", Time.now.to_i)
         $redis.expire(key, 15 * 60)
       end
@@ -49,6 +50,7 @@ module WarriorHQ
         key = "warriorhq:instances:#{ data["warrior"]["warrior_id"] }"
         $redis.pipelined do
           $redis.hset(key, "ip", request.ip)
+          $redis.hset(key, "user_agent", request.user_agent)
           $redis.hset(key, "last_seen", Time.now.to_i)
           $redis.hset(key, "data", JSON.dump(data["warrior"]))
           $redis.expire(key, 15 * 60)
