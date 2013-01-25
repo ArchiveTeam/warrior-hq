@@ -1,5 +1,7 @@
 module WarriorHQ
   class App < Sinatra::Base
+    set :protection, false
+
     get "/" do
       File.read("index.html")
     end
@@ -24,6 +26,7 @@ module WarriorHQ
     end
 
     get "/projects.json" do
+      headers["Access-Control-Allow-Origin"] = "*"
       cache_control :no_cache, :no_store
       content_type :json
       $redis.get("warriorhq:projects_json")
