@@ -25,6 +25,30 @@ module WarriorHQ
       JSON.dump(coords)
     end
 
+    get "/stats.json" do
+      cache_control :no_cache, :no_store
+      content_type :json
+
+      keys = $redis.keys("warriorhq:instances:*")
+      coords = keys.map do |k|
+        ip = $redis.hget(k, "ip")
+        pos = nil
+        if ip
+          geo = $geoip[ip]
+          if geo and geo["latitude"] and geo["latitude"]=~/[-.0-9]+/
+            pos = [ geo["latitude"].to_i, geo["longitude"].to_i ]
+          end
+        end
+        pos
+      end.compact
+      projects = Hash.new(0)
+      keys.each do |k|
+        projects[(JSON.parse($redis.hget(k, "data")) || {})["selected_project"] || nil] += 1
+      end
+      projects = projects.sort_by { |project, count| -count }
+      JSON.dump({ "projects"=>projects, "coords"=>coords })
+    end
+
     get "/projects.json" do
       headers["Access-Control-Allow-Origin"] = "*"
       cache_control :no_cache, :no_store

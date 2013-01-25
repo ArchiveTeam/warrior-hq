@@ -76,12 +76,47 @@
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
       }
+
+      #stats {
+        position: absolute;
+        left: 50px;
+        top: 50px;
+        background: #fff;
+        background: rgba(255, 255, 255, 0.7);
+        font-family: Arial,Helvetica,sans-serif;
+        font-size: 18px;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+      }
+      #stats table {
+        padding: 5px 0 4px 0;
+        margin: 0 3px 0 3px;
+      }
+      #stats table th {
+        padding: 3px 10px 3px 7px;
+        text-align: left;
+        font-weight: normal;
+      }
+      #stats table td {
+        padding: 3px 10px 3px 15px;
+        text-align: right;
+      }
+      #stats tfoot th, #stats tfoot td {
+        border-top: 1px solid rgba(0,0,0,0.1);
+      }
     </style>
   </head>
 
   <body>
     <div id="map"></div>
     <h1>ArchiveTeam Warrior HQ</h1>
+    <div id="stats"><table cellspacing="0">
+      <tr><th>dailybooth</th><td>15</td></tr>
+      <tr><th>dailybooth</th><td>15</td></tr>
+      <tr><th>dailybooth</th><td>15</td></tr>
+    </table>
+    </div>
 
     <script type="text/javascript">
       (function() {
@@ -110,12 +145,35 @@
         map.theMarkers = [];
 
         function handleMarkers(responseJSON) {
-          map.theMarkers = updateMarkers(map, map.theMarkers, responseJSON);
+          map.theMarkers = updateMarkers(map, map.theMarkers, responseJSON.coords);
+
+          var table = new Element('table', { cellspacing: 0 }),
+              tbody = new Element('tbody'),
+              tfoot = new Element('tfoot');
+          table.grab(tbody);
+          table.grab(tfoot);
+
+          var sum = 0;
+          var projects = responseJSON.projects;
+          for (var i=0; i<projects.length; i++) {
+            var tr = new Element('tr');
+            tr.grab(new Element('th', { html: projects[i][0] }));
+            tr.grab(new Element('td', { html: projects[i][1] }));
+            tbody.grab(tr);
+            sum += projects[i][1];
+          }
+
+          var tr = new Element('tr');
+          tr.grab(new Element('th', { html: 'total' }));
+          tr.grab(new Element('td', { html: sum }));
+          tfoot.grab(tr);
+
+          table.replaces($$('#stats table')[0]);
         }
 
         function loadMarkers() {
           new Request.JSON({
-            url: '/positions.json',
+            url: '/stats.json',
             onSuccess: handleMarkers,
             method: 'GET'
           }).send();
