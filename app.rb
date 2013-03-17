@@ -50,10 +50,17 @@ module WarriorHQ
     end
 
     get "/projects.json" do
+      json_data = $redis.get("warriorhq:projects_json")
+
       headers["Access-Control-Allow-Origin"] = "*"
       cache_control :no_cache, :no_store
-      content_type :json
-      $redis.get("warriorhq:projects_json")
+      if params[:callback]
+        content_type "application/json-p"
+        "#{ params[:callback] }(#{ json_data });"
+      else
+        content_type :json
+        json_data
+      end
     end
 
     post "/api/register.json" do
