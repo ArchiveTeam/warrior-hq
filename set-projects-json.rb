@@ -6,6 +6,7 @@ require "./geoip"
 $redis = Redis.new(:db=>1)
 
 data = JSON.parse(File.read(ARGV[0]).gsub(/^\/\/.+/, ""))
+data["projects"].compact!
 data["projects"].each do |project|
   if project["host"] and not project["lat_lng"]
     geo = GeoIP.new[project["host"], false]
