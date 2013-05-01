@@ -1,7 +1,7 @@
 require "rubygems"
 require "redis"
 require "json"
-require "./geoip"
+require File.join(File.dirname(__FILE__), "./geoip")
 
 $redis = Redis.new(:db=>1)
 
