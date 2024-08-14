@@ -4,17 +4,10 @@
     <meta charset="utf-8" />
     <title>ArchiveTeam Warrior HQ</title>
 
-    <!-- cdn.leafletjs.com -->
-    <link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.4.4/leaflet.css" />
-    <!--[if lte IE 8]>
-      <link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.4.4/leaflet.ie.css" />
-    <![endif]-->
-
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <script type="text/javascript" src="https://d19vzq90twjlae.cloudfront.net/leaflet-0.4.4/leaflet.js"></script>
-    <!-- maps.stamen.com -->
-    <script type="text/javascript" src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.1.2"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
 
     <style type="text/css">
@@ -123,7 +116,10 @@
     <script type="text/javascript">
       (function() {
 
-        var layer = new L.StamenTileLayer('watercolor');
+        var layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 8,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
         var map = L.map('map').setView([30, 0], 3);
         map.addLayer(layer);
         map.fitWorld();
@@ -210,4 +206,3 @@
     </script>
   </body>
 </html>
-
