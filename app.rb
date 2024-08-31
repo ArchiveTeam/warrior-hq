@@ -93,8 +93,12 @@ module WarriorHQ
     post "/api/update.json" do
       content_type :json
       data = JSON.parse(request.body.read)
-      if data["warrior"]["warrior_id"].to_s=~/\A[0-9]+\Z/
-        key = "warriorhq:instances:#{ data["warrior"]["warrior_id"] }"
+      warrior_id = data["warrior"]["warrior_id"]
+      if warrior_id.to_s.empty?
+        warrior_id = ("#{ request.ip }/#{ request.user_agent }".hash & 0xffff_ffff) | 0x1f00_0000
+      end
+      if warrior_id.to_s=~/\A[0-9]+\Z/
+        key = "warriorhq:instances:#{ warrior_id }"
         $redis.pipelined do
           $redis.hset(key, "ip", request.ip)
           $redis.hset(key, "user_agent", request.user_agent)
@@ -130,4 +134,3 @@ module WarriorHQ
     end
   end
 end
-
