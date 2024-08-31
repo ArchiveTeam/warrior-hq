@@ -8,7 +8,9 @@ class GeoIP
   end
 
   def [](ip, cached_only=true)
-    @cache[ip] ||= lookup(ip, cached_only)
+    # FIXME: expire nil values
+    # @cache[ip] ||= lookup(ip, cached_only)
+    lookup(ip, cached_only)
   end
 
   def process_todo

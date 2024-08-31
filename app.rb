@@ -21,7 +21,7 @@ module WarriorHQ
           pos = nil
           if ip
             geo = $geoip[ip]
-            if geo and geo["latitude"] and geo["latitude"]=~/[-.0-9]+/
+            if geo and geo["latitude"] and geo["latitude"].to_s=~/[-.0-9]+/
               pos = [ geo["latitude"].to_i, geo["longitude"].to_i ]
             end
           end
@@ -43,7 +43,7 @@ module WarriorHQ
           pos = nil
           if ip
             geo = $geoip[ip]
-            if geo and geo["latitude"] and geo["latitude"]=~/[-.0-9]+/
+            if geo and geo["latitude"] and geo["latitude"].to_s=~/[-.0-9]+/
               pos = [ geo["latitude"].to_i.to_f + (rand - 0.5), geo["longitude"].to_i.to_f + (rand - 0.5) ]
             end
           end
