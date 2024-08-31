@@ -38,7 +38,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 "longitude": geoip_response.location.longitude,
             }
 
-        except geoip2.errors.AddressNotFoundError:
+        except (geoip2.errors.AddressNotFoundError, KeyError):
             doc = {
                 "source": "geolite2",
                 "host": ip_address,
