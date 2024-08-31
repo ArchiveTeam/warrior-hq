@@ -4,5 +4,4 @@ require "json"
 require "./geoip"
 
 $redis = Redis.new(:db=>1)
-GeoIP.new.process_todo
-
+GeoIP.new(:hostname=>"127.0.0.1").process_todo

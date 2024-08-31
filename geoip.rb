@@ -1,7 +1,8 @@
 require "net/http"
 
 class GeoIP
-  def initialize
+  def initialize(hostname: "smart-ip.net")
+    @hostname = hostname
     @cache = {}
   end
 
@@ -28,10 +29,9 @@ class GeoIP
         return nil
       end
 
-      data = Net::HTTP.get("smart-ip.net", "/geoip-json/#{ ip }")
+      data = Net::HTTP.get(@hostname, "/geoip-json/#{ ip }")
       $redis.hset("warriorhq:geoip", ip, data)
     end
     JSON.parse(data)
   end
 end
-
