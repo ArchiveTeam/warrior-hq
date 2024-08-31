@@ -1,0 +1,13 @@
+[Unit]
+Description="Warrior HQ Resolve GeoIP"
+
+[Service]
+Type=oneshot
+Group=tracker
+User=tracker
+Environment=GEM_PATH=/home/tracker/.rvm/gems/ruby-2.2.2:/home/tracker/.rvm/gems/ruby-2.2.2@global
+WorkingDirectory=/home/tracker/warrior-hq
+ExecStart=/home/tracker/.rvm/rubies/ruby-2.2.2/bin/ruby /home/tracker/warrior-hq/resolve-geoip.rb
+
+[Install]
+WantedBy=multi-user.target
