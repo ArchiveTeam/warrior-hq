@@ -5,12 +5,18 @@ class GeoIP
     @hostname = hostname
     @port = port
     @cache = {}
+    @cache_timestamp = Process.clock_gettime(Process::CLOCK_MONOTONIC)
   end
 
   def [](ip, cached_only=true)
-    # FIXME: expire nil values
-    # @cache[ip] ||= lookup(ip, cached_only)
-    lookup(ip, cached_only)
+    current_timestamp = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+    if current_timestamp - @cache_timestamp > 3600
+      @cache.delete_if {|key, value| value.nil? }
+      @cache_timestamp = current_timestamp
+    end
+
+    @cache[ip] ||= lookup(ip, cached_only)
   end
 
   def process_todo
